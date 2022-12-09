@@ -32,8 +32,8 @@
 typedef enum {MONITOR, SAMPLING, SENDING, IDLE} states_t;
  
  
-static logic_port_state = 0;
-static logic_port_pre_state;
+static uint8_t logic_port_state = 0;
+static uint8_t logic_port_pre_state;
 static states_t currentState = SAMPLING;
 static uint8_t  pin_states[_SAMPLES_NUM];
 static uint32_t time_snap[_SAMPLES_NUM];
@@ -62,7 +62,6 @@ void LOGIC_MainFunction(void)
 {    
     static volatile uint8_t samples_cnt = 0;
     static char _go_signal_buf = 'N';
-	PORTA=0xFF;
     // Main function must have two states,
     // First state is command parsing and waveform selection.
     // second state is waveform executing.
@@ -78,8 +77,8 @@ void LOGIC_MainFunction(void)
         }
         case SAMPLING:
         {
-			
             // DO here sampling.
+			if(samples_cnt==0) TIMER_Reset();
             LOGIC_DDR = 0;
             pin_states[samples_cnt] = LOGIC_PORT; 
             time_snap[samples_cnt]  = getTime();
@@ -93,10 +92,10 @@ void LOGIC_MainFunction(void)
         }
         case SENDING:
         {
-			LED_On();
 			//LED_Blink();
             // For _SAMPLES_NUM samples send the construct the buffer.
-            static uint8_t _sample_buf[FULL_SAMPLE_CNT];
+            {
+			uint8_t _sample_buf[FULL_SAMPLE_CNT];
             for(uint8_t i = 0; i < _SAMPLES_NUM; i++)
             {
                 // Construct the buffer.
@@ -105,27 +104,29 @@ void LOGIC_MainFunction(void)
                 _sample_buf[MARKER_START] = '@';
 				
                 // Add pin value.
-                _sample_buf[_SAMPLE_PIN]  = pin_states[i];
+                _sample_buf[_SAMPLE_PIN]  = pin_states[i]+0x30;
  
                 // Add time snap value.
-                _sample_buf[_SAMPLE_TIME + 0] = ((time_snap[i] & 0xFF000000) >> 24);
-                _sample_buf[_SAMPLE_TIME + 1] = ((time_snap[i] & 0x00FF0000) >> 16);
-                _sample_buf[_SAMPLE_TIME + 2] = ((time_snap[i] & 0x0000FF00) >> 8);
-                _sample_buf[_SAMPLE_TIME + 3] = ((time_snap[i] & 0x000000FF) >> 0);
+                _sample_buf[_SAMPLE_TIME + 0] = ((time_snap[i] & 0xFF000000) >> 24)+0x30;
+                _sample_buf[_SAMPLE_TIME + 1] = ((time_snap[i] & 0x00FF0000) >> 16)+0x30;
+                _sample_buf[_SAMPLE_TIME + 2] = ((time_snap[i] & 0x0000FF00) >> 8)+0x30;
+                _sample_buf[_SAMPLE_TIME + 3] = ((time_snap[i] & 0x000000FF) >> 0)+0x30;
 
                 _sample_buf[MARKER_END]   = ';';
 				
                 // Send sample.
                 UART_SendPayload(_sample_buf, FULL_SAMPLE_CNT);
                 while (0 == UART_IsTxComplete());
+				LED_On();
             }
+			}
 			samples_cnt=0; //Extra
             // Trigger receiving for go signal.
             //UART_ReceivePayload((uint8_t *)_go_signal_buf, 1);   
         }
         case IDLE:
         {
-			LED_Blink();
+			//LED_Blink();
             //currentState = ((1 == UART_IsRxComplete())&&(_go_signal_buf == 'G')) ? MONITOR : IDLE;
 			currentState = MONITOR;
             if(currentState == MONITOR)
