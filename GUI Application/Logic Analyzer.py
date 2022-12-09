@@ -1,13 +1,24 @@
+from itertools import count
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+
+from threading import Thread
+
 from re import S
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 import serial
 
 # declare port to be initialized later
-port = 0
+
+x_values = []
+y_values = []
 class Ui_MainWindow(object):
     modeOperation=''
-
+    port = None
+    serialPort = None
     def load_ports(self):
         ports = QSerialPortInfo().availablePorts()
         for port in ports:
@@ -15,12 +26,12 @@ class Ui_MainWindow(object):
 
     # connect to selected port in combobox
     def connect(self):
-        port = self.comboBox.currentText()
+        self.port = self.comboBox.currentText()
         #self.serial = QSerialPort(port)
-        self.serial = serial.Serial(port, 9600, timeout=1)
+        self.serialPort = serial.Serial(self.port, 9600, timeout=1)
         #if self.serial is open
 
-        if self.serial.isOpen():
+        if self.serialPort.isOpen():
             self.connectionLabel.setText("Connected")
             self.connectionLabel.setStyleSheet("color: green")
             self.signalGroup.setEnabled(True)
@@ -32,7 +43,7 @@ class Ui_MainWindow(object):
             self.signalInfoGroup.setEnabled(False)
     # disconnect from serial port
     def disconnect(self):
-        self.serial.close()
+        self.serialPort.close()
 
         self.connectionLabel.setText("No connection")
         self.connectionLabel.setStyleSheet("color: red")
@@ -45,7 +56,43 @@ class Ui_MainWindow(object):
         self.load_ports()
 
     def send_to_memory(self, data):
-        self.serial.write(data.encode())
+        self.serialPort.write(data.encode())
+
+    def readingSerialPortThread(self):
+        while True:
+            if serial.Serial(self.port, 9600, timeout=1).isOpen():
+                data = serial.Serial(self.port, 9600, timeout=1).readline().decode()
+                # if data legnth is greater than 0
+                if len(data) > 0:
+                    #remove any @ or ; from data
+                    data = data.replace('@', '')
+                    data = data.replace(';', '')
+                    #append first byte to y_values list and combine values from second to fifth byte to x_values list and convert to number from ascii
+                    y_values.append(int(data[0])-0x30)
+                    x_values.append(int(data[1:5]))
+                    print (y_values)
+                
+                #def animate(i):
+                #x = data['x_value']
+                #y1 = data['total_1']
+                #y2 = data['total_2']
+
+                #plt.cla()
+
+                #plt.plot(x, y1, label='Channel 1')
+                #plt.plot(x, y2, label='Channel 2')
+
+                #plt.legend(loc='upper left')
+                #plt.tight_layout()
+
+
+                #ani = FuncAnimation(plt.gcf(), animate, interval=1000)
+
+                #plt.tight_layout()
+                #plt.show()
+
+              
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -112,6 +159,9 @@ class Ui_MainWindow(object):
         self.disconnectBtn.clicked.connect(self.disconnect)
         self.refreshBtn.clicked.connect(self.refresh_ports)
 
+        signalReadingThread = Thread(target = self.readingSerialPortThread)
+        signalReadingThread.start()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Logic Analyzer"))
@@ -133,4 +183,7 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    #create a thread for reading the signal from the serial port
+
     sys.exit(app.exec_())
+    
