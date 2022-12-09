@@ -8,29 +8,29 @@
 
 void TIMER_Init()
 {
-	// Setting Timer ov interrupt on
-	DIO_SET_PIN_VAL(TIMSK,2,1);
+	// Setting Prescaler to 64
+	DIO_SET_PIN_VAL(TCCR1B,CS10,1); //CS10
+	DIO_SET_PIN_VAL(TCCR1B,CS11,1); //CS11
+	DIO_SET_PIN_VAL(TCCR1B,CS12,0); //CS12
+	
+	// Starting Timer
+	TIMER_Reset();
 	
 	// Setting Timer1 to Normal Mode
-	DIO_SET_PIN_VAL(TCCR1A,0,0); //WGM10
-	DIO_SET_PIN_VAL(TCCR1A,1,0); //WGM11
-	DIO_SET_PIN_VAL(TCCR1B,3,0); //WGM12
-	DIO_SET_PIN_VAL(TCCR1B,4,0); //WGM13
+	DIO_SET_PIN_VAL(TCCR1A,WGM10,0); //WGM10
+	DIO_SET_PIN_VAL(TCCR1A,WGM11,0); //WGM11
+	DIO_SET_PIN_VAL(TCCR1B,WGM12,0); //WGM12
+	DIO_SET_PIN_VAL(TCCR1B,WGM13,0); //WGM13
 	
-	// Setting Prescaler to 64
-	DIO_SET_PIN_VAL(TCCR1B,0,1); //CS10
-	DIO_SET_PIN_VAL(TCCR1B,1,1); //CS11
-	DIO_SET_PIN_VAL(TCCR1B,2,0); //CS12
 	
-	TIMER_Reset();
+	// Setting Timer ov interrupt on
+	DIO_SET_PIN_VAL(TIMSK,TOIE1,1);
 }
 
 void TIMER_Reset()
 {
-	TCNT1L = 0;
-	TCNT1H = 0;
-	timerOVFs = 0;
 	TCNT1 = 0;
+	timerOVFs = 0;
 }
 
 ISR(TIMER1_OVF_vect)
