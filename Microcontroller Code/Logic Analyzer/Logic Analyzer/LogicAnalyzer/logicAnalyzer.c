@@ -46,8 +46,8 @@ static uint32_t getTime(void)
 	// Time = timerOVFs * 65535 * 8x10^-6
 	// TCNT1L & TCNT1H
 	uint32_t timerValue = 0;
-	timerValue |= TCNT1 & 0x00FF;
-	timerValue |= ((TCNT1 & 0xFF00)*0x100);
+	timerValue |= (TCNT1L & 0x00FF);
+	timerValue |= ((TCNT1H & 0xFF00)*0x100);
     return (((timerOVFs*clks_number)+timerValue)*clk_time);
 }
  
@@ -94,9 +94,8 @@ void LOGIC_MainFunction(void)
         {
 			//LED_Blink();
             // For _SAMPLES_NUM samples send the construct the buffer.
-            {
-			uint8_t _sample_buf[FULL_SAMPLE_CNT];
-            for(uint8_t i = 0; i < _SAMPLES_NUM; i++)
+			static uint8_t _sample_buf[FULL_SAMPLE_CNT];
+            for(uint8_t i = 0; i < _SAMPLES_NUM; ++i)
             {
                 // Construct the buffer.
                 
@@ -118,7 +117,6 @@ void LOGIC_MainFunction(void)
                 UART_SendPayload(_sample_buf, FULL_SAMPLE_CNT);
                 while (0 == UART_IsTxComplete());
 				LED_On();
-            }
 			}
 			samples_cnt=0; //Extra
             // Trigger receiving for go signal.

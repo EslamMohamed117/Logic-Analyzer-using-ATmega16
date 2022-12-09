@@ -353,35 +353,35 @@ END GROUP
                 0x0000017c       0xa2 Lib/DIO/DIO.o
                 0x0000017c                DIO_SET_PIN_VAL
  .text.TIMER_Reset
-                0x0000021e        0xe Lib/TIMER/timer1.o
+                0x0000021e        0xa Lib/TIMER/timer1.o
                 0x0000021e                TIMER_Reset
  .text.TIMER_Init
-                0x0000022c       0x54 Lib/TIMER/timer1.o
-                0x0000022c                TIMER_Init
+                0x00000228       0x54 Lib/TIMER/timer1.o
+                0x00000228                TIMER_Init
  .text.__vector_11
-                0x00000280       0x78 Lib/USART/uart.o
-                0x00000280                __vector_11
+                0x0000027c       0x78 Lib/USART/uart.o
+                0x0000027c                __vector_11
  .text.__vector_13
-                0x000002f8       0x70 Lib/USART/uart.o
-                0x000002f8                __vector_13
+                0x000002f4       0x70 Lib/USART/uart.o
+                0x000002f4                __vector_13
  .text.UART_Init
-                0x00000368       0x18 Lib/USART/uart.o
-                0x00000368                UART_Init
+                0x00000364       0x18 Lib/USART/uart.o
+                0x00000364                UART_Init
  .text.UART_Config
-                0x00000380       0x36 Lib/USART/uart.o
-                0x00000380                UART_Config
+                0x0000037c       0x36 Lib/USART/uart.o
+                0x0000037c                UART_Config
  .text.UART_SendPayload
-                0x000003b6       0x24 Lib/USART/uart.o
-                0x000003b6                UART_SendPayload
+                0x000003b2       0x24 Lib/USART/uart.o
+                0x000003b2                UART_SendPayload
  .text.UART_IsTxComplete
-                0x000003da       0x1c Lib/USART/uart.o
-                0x000003da                UART_IsTxComplete
+                0x000003d6       0x1c Lib/USART/uart.o
+                0x000003d6                UART_IsTxComplete
  .text.LOGIC_Init
-                0x000003f6        0xa LogicAnalyzer/logicAnalyzer.o
-                0x000003f6                LOGIC_Init
+                0x000003f2        0xa LogicAnalyzer/logicAnalyzer.o
+                0x000003f2                LOGIC_Init
  .text.LOGIC_MainFunction
-                0x00000400      0x16c LogicAnalyzer/logicAnalyzer.o
-                0x00000400                LOGIC_MainFunction
+                0x000003fc      0x170 LogicAnalyzer/logicAnalyzer.o
+                0x000003fc                LOGIC_MainFunction
  .text.startup.main
                 0x0000056c        0xa main.o
                 0x0000056c                main
@@ -430,7 +430,7 @@ END GROUP
                 0x00800062                _edata = .
                 0x00800062                PROVIDE (__data_end, .)
 
-.bss            0x00800062       0x1f
+.bss            0x00800062       0x26
                 0x00800062                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
@@ -444,26 +444,28 @@ END GROUP
  .bss.tx_len    0x0080006b        0x2 Lib/USART/uart.o
  .bss.tx_buffer
                 0x0080006d        0x2 Lib/USART/uart.o
+ .bss._sample_buf.1982
+                0x0080006f        0x7 LogicAnalyzer/logicAnalyzer.o
  .bss.samples_cnt.1976
-                0x0080006f        0x1 LogicAnalyzer/logicAnalyzer.o
+                0x00800076        0x1 LogicAnalyzer/logicAnalyzer.o
  .bss.time_snap
-                0x00800070        0xc LogicAnalyzer/logicAnalyzer.o
+                0x00800077        0xc LogicAnalyzer/logicAnalyzer.o
  .bss.pin_states
-                0x0080007c        0x3 LogicAnalyzer/logicAnalyzer.o
+                0x00800083        0x3 LogicAnalyzer/logicAnalyzer.o
  .bss.logic_port_state
-                0x0080007f        0x1 LogicAnalyzer/logicAnalyzer.o
+                0x00800086        0x1 LogicAnalyzer/logicAnalyzer.o
  .bss.timerOVFs
-                0x00800080        0x1 LogicAnalyzer/logicAnalyzer.o
+                0x00800087        0x1 LogicAnalyzer/logicAnalyzer.o
  *(COMMON)
-                0x00800081                PROVIDE (__bss_end, .)
+                0x00800088                PROVIDE (__bss_end, .)
                 0x00000598                __data_load_start = LOADADDR (.data)
                 0x0000059a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800081        0x0
+.noinit         0x00800088        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800081                _end = .
+                0x00800088                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
