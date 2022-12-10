@@ -46,8 +46,8 @@ static uint32_t getTime(void)
 	// Time = timerOVFs * 65535 * 8x10^-6
 	// TCNT1L & TCNT1H
 	uint32_t timerValue = 0;
-	timerValue |= (TCNT1L & 0x00FF);
-	timerValue |= ((TCNT1H & 0xFF00)*0x100);
+	timerValue |= (TCNT1 & 0x00FF);
+	timerValue |= ((TCNT1 & 0xFF00)*0x100);
     return (((timerOVFs*clks_number)+timerValue)*clk_time);
 }
  
@@ -103,13 +103,13 @@ void LOGIC_MainFunction(void)
                 _sample_buf[MARKER_START] = '@';
 				
                 // Add pin value.
-                _sample_buf[_SAMPLE_PIN]  = pin_states[i]+0x30;
+                _sample_buf[_SAMPLE_PIN]  = pin_states[i];
  
                 // Add time snap value.
-                _sample_buf[_SAMPLE_TIME + 0] = ((time_snap[i] & 0xFF000000) >> 24)+0x30;
-                _sample_buf[_SAMPLE_TIME + 1] = ((time_snap[i] & 0x00FF0000) >> 16)+0x30;
-                _sample_buf[_SAMPLE_TIME + 2] = ((time_snap[i] & 0x0000FF00) >> 8)+0x30;
-                _sample_buf[_SAMPLE_TIME + 3] = ((time_snap[i] & 0x000000FF) >> 0)+0x30;
+                _sample_buf[_SAMPLE_TIME + 0] = ((time_snap[i] & 0xFF000000) >> 24);
+                _sample_buf[_SAMPLE_TIME + 1] = ((time_snap[i] & 0x00FF0000) >> 16);
+                _sample_buf[_SAMPLE_TIME + 2] = ((time_snap[i] & 0x0000FF00) >> 8);
+                _sample_buf[_SAMPLE_TIME + 3] = ((time_snap[i] & 0x000000FF) >> 0);
 
                 _sample_buf[MARKER_END]   = ';';
 				

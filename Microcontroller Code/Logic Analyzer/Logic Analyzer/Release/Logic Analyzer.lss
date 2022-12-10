@@ -3,23 +3,23 @@ Logic Analyzer.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000580  00000000  00000000  00000094  2**1
+  0 .text         00000576  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000002  00800060  00000580  00000614  2**0
+  1 .data         00000002  00800060  00000576  0000060a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000026  00800062  00800062  00000616  2**0
+  2 .bss          00000026  00800062  00800062  0000060c  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000616  2**0
+  3 .comment      00000030  00000000  00000000  0000060c  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000648  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000063c  2**2
                   CONTENTS, READONLY
-  5 .debug_info   0000052e  00000000  00000000  00000684  2**0
+  5 .debug_info   0000052e  00000000  00000000  00000678  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000004e7  00000000  00000000  00000bb2  2**0
+  6 .debug_abbrev 000004e7  00000000  00000000  00000ba6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000116  00000000  00000000  00001099  2**0
+  7 .debug_line   00000116  00000000  00000000  0000108d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    000001af  00000000  00000000  000011af  2**0
+  8 .debug_str    000001af  00000000  00000000  000011a3  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -59,7 +59,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	e0 e8       	ldi	r30, 0x80	; 128
+  66:	e6 e7       	ldi	r30, 0x76	; 118
   68:	f5 e0       	ldi	r31, 0x05	; 5
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
@@ -81,8 +81,8 @@ Disassembly of section .text:
   80:	a8 38       	cpi	r26, 0x88	; 136
   82:	b2 07       	cpc	r27, r18
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
-  86:	0e 94 aa 02 	call	0x554	; 0x554 <main>
-  8a:	0c 94 be 02 	jmp	0x57c	; 0x57c <_exit>
+  86:	0e 94 a5 02 	call	0x54a	; 0x54a <main>
+  8a:	0c 94 b9 02 	jmp	0x572	; 0x572 <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -514,19 +514,19 @@ Disassembly of section .text:
  414:	38 f0       	brcs	.+14     	; 0x424 <__DATA_REGION_LENGTH__+0x24>
  416:	82 30       	cpi	r24, 0x02	; 2
  418:	09 f4       	brne	.+2      	; 0x41c <__DATA_REGION_LENGTH__+0x1c>
- 41a:	4d c0       	rjmp	.+154    	; 0x4b6 <__stack+0x57>
+ 41a:	50 c0       	rjmp	.+160    	; 0x4bc <__stack+0x5d>
  41c:	83 30       	cpi	r24, 0x03	; 3
  41e:	09 f4       	brne	.+2      	; 0x422 <__DATA_REGION_LENGTH__+0x22>
- 420:	84 c0       	rjmp	.+264    	; 0x52a <__stack+0xcb>
- 422:	8f c0       	rjmp	.+286    	; 0x542 <__stack+0xe3>
+ 420:	7f c0       	rjmp	.+254    	; 0x520 <__stack+0xc1>
+ 422:	8a c0       	rjmp	.+276    	; 0x538 <__stack+0xd9>
  424:	1a ba       	out	0x1a, r1	; 26
  426:	20 91 86 00 	lds	r18, 0x0086	; 0x800086 <logic_port_state>
  42a:	99 b3       	in	r25, 0x19	; 25
  42c:	90 93 86 00 	sts	0x0086, r25	; 0x800086 <logic_port_state>
  430:	81 e0       	ldi	r24, 0x01	; 1
  432:	29 13       	cpse	r18, r25
- 434:	3d c0       	rjmp	.+122    	; 0x4b0 <__stack+0x51>
- 436:	39 c0       	rjmp	.+114    	; 0x4aa <__stack+0x4b>
+ 434:	40 c0       	rjmp	.+128    	; 0x4b6 <__stack+0x57>
+ 436:	3c c0       	rjmp	.+120    	; 0x4b0 <__stack+0x51>
  438:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <samples_cnt.1976>
  43c:	81 11       	cpse	r24, r1
  43e:	02 c0       	rjmp	.+4      	; 0x444 <__DATA_REGION_LENGTH__+0x44>
@@ -540,137 +540,132 @@ Disassembly of section .text:
  452:	80 83       	st	Z, r24
  454:	e0 91 76 00 	lds	r30, 0x0076	; 0x800076 <samples_cnt.1976>
  458:	4c b5       	in	r20, 0x2c	; 44
- 45a:	8d b5       	in	r24, 0x2d	; 45
- 45c:	20 91 87 00 	lds	r18, 0x0087	; 0x800087 <timerOVFs>
- 460:	84 e0       	ldi	r24, 0x04	; 4
- 462:	e8 9f       	mul	r30, r24
- 464:	f0 01       	movw	r30, r0
- 466:	11 24       	eor	r1, r1
- 468:	e9 58       	subi	r30, 0x89	; 137
- 46a:	ff 4f       	sbci	r31, 0xFF	; 255
- 46c:	30 e0       	ldi	r19, 0x00	; 0
- 46e:	af ef       	ldi	r26, 0xFF	; 255
- 470:	bf ef       	ldi	r27, 0xFF	; 255
- 472:	0e 94 af 02 	call	0x55e	; 0x55e <__umulhisi3>
- 476:	dc 01       	movw	r26, r24
- 478:	cb 01       	movw	r24, r22
- 47a:	84 0f       	add	r24, r20
- 47c:	91 1d       	adc	r25, r1
- 47e:	a1 1d       	adc	r26, r1
- 480:	b1 1d       	adc	r27, r1
- 482:	33 e0       	ldi	r19, 0x03	; 3
- 484:	88 0f       	add	r24, r24
- 486:	99 1f       	adc	r25, r25
- 488:	aa 1f       	adc	r26, r26
- 48a:	bb 1f       	adc	r27, r27
- 48c:	3a 95       	dec	r19
- 48e:	d1 f7       	brne	.-12     	; 0x484 <__stack+0x25>
- 490:	80 83       	st	Z, r24
- 492:	91 83       	std	Z+1, r25	; 0x01
- 494:	a2 83       	std	Z+2, r26	; 0x02
- 496:	b3 83       	std	Z+3, r27	; 0x03
- 498:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <samples_cnt.1976>
- 49c:	8f 5f       	subi	r24, 0xFF	; 255
- 49e:	80 93 76 00 	sts	0x0076, r24	; 0x800076 <samples_cnt.1976>
- 4a2:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <samples_cnt.1976>
- 4a6:	83 30       	cpi	r24, 0x03	; 3
- 4a8:	10 f4       	brcc	.+4      	; 0x4ae <__stack+0x4f>
- 4aa:	80 e0       	ldi	r24, 0x00	; 0
- 4ac:	01 c0       	rjmp	.+2      	; 0x4b0 <__stack+0x51>
- 4ae:	82 e0       	ldi	r24, 0x02	; 2
- 4b0:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
- 4b4:	46 c0       	rjmp	.+140    	; 0x542 <__stack+0xe3>
- 4b6:	03 e8       	ldi	r16, 0x83	; 131
- 4b8:	10 e0       	ldi	r17, 0x00	; 0
- 4ba:	c7 e7       	ldi	r28, 0x77	; 119
- 4bc:	d0 e0       	ldi	r29, 0x00	; 0
- 4be:	83 e8       	ldi	r24, 0x83	; 131
- 4c0:	e8 2e       	mov	r14, r24
- 4c2:	80 e0       	ldi	r24, 0x00	; 0
- 4c4:	f8 2e       	mov	r15, r24
- 4c6:	90 e4       	ldi	r25, 0x40	; 64
- 4c8:	d9 2e       	mov	r13, r25
- 4ca:	2b e3       	ldi	r18, 0x3B	; 59
- 4cc:	c2 2e       	mov	r12, r18
- 4ce:	d0 92 6f 00 	sts	0x006F, r13	; 0x80006f <_sample_buf.1982>
- 4d2:	f8 01       	movw	r30, r16
- 4d4:	81 91       	ld	r24, Z+
- 4d6:	8f 01       	movw	r16, r30
- 4d8:	80 5d       	subi	r24, 0xD0	; 208
- 4da:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <_sample_buf.1982+0x1>
- 4de:	89 91       	ld	r24, Y+
- 4e0:	99 91       	ld	r25, Y+
- 4e2:	a9 91       	ld	r26, Y+
- 4e4:	b9 91       	ld	r27, Y+
- 4e6:	20 e3       	ldi	r18, 0x30	; 48
- 4e8:	2b 0f       	add	r18, r27
- 4ea:	20 93 71 00 	sts	0x0071, r18	; 0x800071 <_sample_buf.1982+0x2>
- 4ee:	20 e3       	ldi	r18, 0x30	; 48
- 4f0:	2a 0f       	add	r18, r26
- 4f2:	20 93 72 00 	sts	0x0072, r18	; 0x800072 <_sample_buf.1982+0x3>
- 4f6:	20 e3       	ldi	r18, 0x30	; 48
- 4f8:	29 0f       	add	r18, r25
- 4fa:	20 93 73 00 	sts	0x0073, r18	; 0x800073 <_sample_buf.1982+0x4>
- 4fe:	80 5d       	subi	r24, 0xD0	; 208
- 500:	80 93 74 00 	sts	0x0074, r24	; 0x800074 <_sample_buf.1982+0x5>
- 504:	c0 92 75 00 	sts	0x0075, r12	; 0x800075 <_sample_buf.1982+0x6>
- 508:	67 e0       	ldi	r22, 0x07	; 7
- 50a:	70 e0       	ldi	r23, 0x00	; 0
- 50c:	8f e6       	ldi	r24, 0x6F	; 111
- 50e:	90 e0       	ldi	r25, 0x00	; 0
- 510:	0e 94 d9 01 	call	0x3b2	; 0x3b2 <UART_SendPayload>
- 514:	0e 94 eb 01 	call	0x3d6	; 0x3d6 <UART_IsTxComplete>
- 518:	88 23       	and	r24, r24
- 51a:	e1 f3       	breq	.-8      	; 0x514 <__stack+0xb5>
- 51c:	0e 94 53 00 	call	0xa6	; 0xa6 <LED_On>
- 520:	ec 16       	cp	r14, r28
- 522:	fd 06       	cpc	r15, r29
- 524:	a1 f6       	brne	.-88     	; 0x4ce <__stack+0x6f>
- 526:	10 92 76 00 	sts	0x0076, r1	; 0x800076 <samples_cnt.1976>
- 52a:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <__DATA_REGION_ORIGIN__>
- 52e:	df 91       	pop	r29
- 530:	cf 91       	pop	r28
- 532:	1f 91       	pop	r17
- 534:	0f 91       	pop	r16
- 536:	ff 90       	pop	r15
- 538:	ef 90       	pop	r14
- 53a:	df 90       	pop	r13
- 53c:	cf 90       	pop	r12
- 53e:	0c 94 0f 01 	jmp	0x21e	; 0x21e <TIMER_Reset>
- 542:	df 91       	pop	r29
- 544:	cf 91       	pop	r28
- 546:	1f 91       	pop	r17
- 548:	0f 91       	pop	r16
- 54a:	ff 90       	pop	r15
- 54c:	ef 90       	pop	r14
- 54e:	df 90       	pop	r13
- 550:	cf 90       	pop	r12
- 552:	08 95       	ret
+ 45a:	5d b5       	in	r21, 0x2d	; 45
+ 45c:	8c b5       	in	r24, 0x2c	; 44
+ 45e:	9d b5       	in	r25, 0x2d	; 45
+ 460:	20 91 87 00 	lds	r18, 0x0087	; 0x800087 <timerOVFs>
+ 464:	84 e0       	ldi	r24, 0x04	; 4
+ 466:	e8 9f       	mul	r30, r24
+ 468:	f0 01       	movw	r30, r0
+ 46a:	11 24       	eor	r1, r1
+ 46c:	e9 58       	subi	r30, 0x89	; 137
+ 46e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 470:	55 27       	eor	r21, r21
+ 472:	30 e0       	ldi	r19, 0x00	; 0
+ 474:	af ef       	ldi	r26, 0xFF	; 255
+ 476:	bf ef       	ldi	r27, 0xFF	; 255
+ 478:	0e 94 aa 02 	call	0x554	; 0x554 <__umulhisi3>
+ 47c:	dc 01       	movw	r26, r24
+ 47e:	cb 01       	movw	r24, r22
+ 480:	84 0f       	add	r24, r20
+ 482:	95 1f       	adc	r25, r21
+ 484:	a1 1d       	adc	r26, r1
+ 486:	b1 1d       	adc	r27, r1
+ 488:	33 e0       	ldi	r19, 0x03	; 3
+ 48a:	88 0f       	add	r24, r24
+ 48c:	99 1f       	adc	r25, r25
+ 48e:	aa 1f       	adc	r26, r26
+ 490:	bb 1f       	adc	r27, r27
+ 492:	3a 95       	dec	r19
+ 494:	d1 f7       	brne	.-12     	; 0x48a <__stack+0x2b>
+ 496:	80 83       	st	Z, r24
+ 498:	91 83       	std	Z+1, r25	; 0x01
+ 49a:	a2 83       	std	Z+2, r26	; 0x02
+ 49c:	b3 83       	std	Z+3, r27	; 0x03
+ 49e:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <samples_cnt.1976>
+ 4a2:	8f 5f       	subi	r24, 0xFF	; 255
+ 4a4:	80 93 76 00 	sts	0x0076, r24	; 0x800076 <samples_cnt.1976>
+ 4a8:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <samples_cnt.1976>
+ 4ac:	83 30       	cpi	r24, 0x03	; 3
+ 4ae:	10 f4       	brcc	.+4      	; 0x4b4 <__stack+0x55>
+ 4b0:	80 e0       	ldi	r24, 0x00	; 0
+ 4b2:	01 c0       	rjmp	.+2      	; 0x4b6 <__stack+0x57>
+ 4b4:	82 e0       	ldi	r24, 0x02	; 2
+ 4b6:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 4ba:	3e c0       	rjmp	.+124    	; 0x538 <__stack+0xd9>
+ 4bc:	03 e8       	ldi	r16, 0x83	; 131
+ 4be:	10 e0       	ldi	r17, 0x00	; 0
+ 4c0:	c7 e7       	ldi	r28, 0x77	; 119
+ 4c2:	d0 e0       	ldi	r29, 0x00	; 0
+ 4c4:	83 e8       	ldi	r24, 0x83	; 131
+ 4c6:	e8 2e       	mov	r14, r24
+ 4c8:	80 e0       	ldi	r24, 0x00	; 0
+ 4ca:	f8 2e       	mov	r15, r24
+ 4cc:	90 e4       	ldi	r25, 0x40	; 64
+ 4ce:	d9 2e       	mov	r13, r25
+ 4d0:	2b e3       	ldi	r18, 0x3B	; 59
+ 4d2:	c2 2e       	mov	r12, r18
+ 4d4:	d0 92 6f 00 	sts	0x006F, r13	; 0x80006f <_sample_buf.1982>
+ 4d8:	f8 01       	movw	r30, r16
+ 4da:	81 91       	ld	r24, Z+
+ 4dc:	8f 01       	movw	r16, r30
+ 4de:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <_sample_buf.1982+0x1>
+ 4e2:	89 91       	ld	r24, Y+
+ 4e4:	99 91       	ld	r25, Y+
+ 4e6:	a9 91       	ld	r26, Y+
+ 4e8:	b9 91       	ld	r27, Y+
+ 4ea:	b0 93 71 00 	sts	0x0071, r27	; 0x800071 <_sample_buf.1982+0x2>
+ 4ee:	a0 93 72 00 	sts	0x0072, r26	; 0x800072 <_sample_buf.1982+0x3>
+ 4f2:	90 93 73 00 	sts	0x0073, r25	; 0x800073 <_sample_buf.1982+0x4>
+ 4f6:	80 93 74 00 	sts	0x0074, r24	; 0x800074 <_sample_buf.1982+0x5>
+ 4fa:	c0 92 75 00 	sts	0x0075, r12	; 0x800075 <_sample_buf.1982+0x6>
+ 4fe:	67 e0       	ldi	r22, 0x07	; 7
+ 500:	70 e0       	ldi	r23, 0x00	; 0
+ 502:	8f e6       	ldi	r24, 0x6F	; 111
+ 504:	90 e0       	ldi	r25, 0x00	; 0
+ 506:	0e 94 d9 01 	call	0x3b2	; 0x3b2 <UART_SendPayload>
+ 50a:	0e 94 eb 01 	call	0x3d6	; 0x3d6 <UART_IsTxComplete>
+ 50e:	88 23       	and	r24, r24
+ 510:	e1 f3       	breq	.-8      	; 0x50a <__stack+0xab>
+ 512:	0e 94 53 00 	call	0xa6	; 0xa6 <LED_On>
+ 516:	ec 16       	cp	r14, r28
+ 518:	fd 06       	cpc	r15, r29
+ 51a:	e1 f6       	brne	.-72     	; 0x4d4 <__stack+0x75>
+ 51c:	10 92 76 00 	sts	0x0076, r1	; 0x800076 <samples_cnt.1976>
+ 520:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 524:	df 91       	pop	r29
+ 526:	cf 91       	pop	r28
+ 528:	1f 91       	pop	r17
+ 52a:	0f 91       	pop	r16
+ 52c:	ff 90       	pop	r15
+ 52e:	ef 90       	pop	r14
+ 530:	df 90       	pop	r13
+ 532:	cf 90       	pop	r12
+ 534:	0c 94 0f 01 	jmp	0x21e	; 0x21e <TIMER_Reset>
+ 538:	df 91       	pop	r29
+ 53a:	cf 91       	pop	r28
+ 53c:	1f 91       	pop	r17
+ 53e:	0f 91       	pop	r16
+ 540:	ff 90       	pop	r15
+ 542:	ef 90       	pop	r14
+ 544:	df 90       	pop	r13
+ 546:	cf 90       	pop	r12
+ 548:	08 95       	ret
 
-00000554 <main>:
- 554:	0e 94 49 00 	call	0x92	; 0x92 <init>
- 558:	0e 94 fe 01 	call	0x3fc	; 0x3fc <LOGIC_MainFunction>
- 55c:	fd cf       	rjmp	.-6      	; 0x558 <main+0x4>
+0000054a <main>:
+ 54a:	0e 94 49 00 	call	0x92	; 0x92 <init>
+ 54e:	0e 94 fe 01 	call	0x3fc	; 0x3fc <LOGIC_MainFunction>
+ 552:	fd cf       	rjmp	.-6      	; 0x54e <main+0x4>
 
-0000055e <__umulhisi3>:
- 55e:	a2 9f       	mul	r26, r18
- 560:	b0 01       	movw	r22, r0
- 562:	b3 9f       	mul	r27, r19
- 564:	c0 01       	movw	r24, r0
- 566:	a3 9f       	mul	r26, r19
+00000554 <__umulhisi3>:
+ 554:	a2 9f       	mul	r26, r18
+ 556:	b0 01       	movw	r22, r0
+ 558:	b3 9f       	mul	r27, r19
+ 55a:	c0 01       	movw	r24, r0
+ 55c:	a3 9f       	mul	r26, r19
+ 55e:	70 0d       	add	r23, r0
+ 560:	81 1d       	adc	r24, r1
+ 562:	11 24       	eor	r1, r1
+ 564:	91 1d       	adc	r25, r1
+ 566:	b2 9f       	mul	r27, r18
  568:	70 0d       	add	r23, r0
  56a:	81 1d       	adc	r24, r1
  56c:	11 24       	eor	r1, r1
  56e:	91 1d       	adc	r25, r1
- 570:	b2 9f       	mul	r27, r18
- 572:	70 0d       	add	r23, r0
- 574:	81 1d       	adc	r24, r1
- 576:	11 24       	eor	r1, r1
- 578:	91 1d       	adc	r25, r1
- 57a:	08 95       	ret
+ 570:	08 95       	ret
 
-0000057c <_exit>:
- 57c:	f8 94       	cli
+00000572 <_exit>:
+ 572:	f8 94       	cli
 
-0000057e <__stop_program>:
- 57e:	ff cf       	rjmp	.-2      	; 0x57e <__stop_program>
+00000574 <__stop_program>:
+ 574:	ff cf       	rjmp	.-2      	; 0x574 <__stop_program>
