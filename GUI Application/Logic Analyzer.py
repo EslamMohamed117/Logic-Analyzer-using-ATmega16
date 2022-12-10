@@ -36,15 +36,18 @@ class Ui_MainWindow(object):
             self.connectionLabel.setStyleSheet("color: green")
             self.signalGroup.setEnabled(True)
             self.signalInfoGroup.setEnabled(True)
+            signalReadingThread = Thread(target = self.readingSerialPortThread, daemon=True, args=(self.serialPort,))
+            signalReadingThread.start()
         else:
             self.connectionLabel.setText("Not connected")
             self.connectionLabel.setStyleSheet("color: red")
             self.signalGroup.setEnabled(False)
             self.signalInfoGroup.setEnabled(False)
+            self.port=None
     # disconnect from serial port
     def disconnect(self):
         self.serialPort.close()
-
+        self.port=None
         self.connectionLabel.setText("No connection")
         self.connectionLabel.setStyleSheet("color: red")
         self.signalGroup.setEnabled(False)
@@ -58,19 +61,28 @@ class Ui_MainWindow(object):
     def send_to_memory(self, data):
         self.serialPort.write(data.encode())
 
-    def readingSerialPortThread(self):
+    def receive_data(self, serialPort):
+        data = serialPort.read().decode('ascii').strip()
+        return data 
+
+    def readingSerialPortThread(self, serialPort):
+        print("readingSerialPortThread")
         while True:
-            if serial.Serial(self.port, 9600, timeout=1).isOpen():
-                data = serial.Serial(self.port, 9600, timeout=1).readline().decode()
-                # if data legnth is greater than 0
-                if len(data) > 0:
+            if serialPort.isOpen():
+                for j in range(3):
+                    data = ''
+                    for i in range(7):
+                        data = data + self.receive_data(serialPort=serialPort)
+                        # if data legnth is greater than 0
+                    if len(data) > 0:
+                        print(data)
                     #remove any @ or ; from data
-                    data = data.replace('@', '')
-                    data = data.replace(';', '')
-                    #append first byte to y_values list and combine values from second to fifth byte to x_values list and convert to number from ascii
-                    y_values.append(int(data[0])-0x30)
-                    x_values.append(int(data[1:5]))
-                    print (y_values)
+                    # data = data.replace('@', '')
+                    # data = data.replace(';', '')
+                    # #append first byte to y_values list and combine values from second to fifth byte to x_values list and convert to number from ascii
+                    # y_values.append(int(data[0])-0x30)
+                    # x_values.append(int(data[1:5]))
+                    # print (y_values)
                 
                 #def animate(i):
                 #x = data['x_value']
@@ -159,8 +171,7 @@ class Ui_MainWindow(object):
         self.disconnectBtn.clicked.connect(self.disconnect)
         self.refreshBtn.clicked.connect(self.refresh_ports)
 
-        signalReadingThread = Thread(target = self.readingSerialPortThread)
-        signalReadingThread.start()
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -183,7 +194,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    #create a thread for reading the signal from the serial port
-
     sys.exit(app.exec_())
     
