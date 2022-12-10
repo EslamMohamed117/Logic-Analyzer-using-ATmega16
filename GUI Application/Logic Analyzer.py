@@ -16,6 +16,7 @@ import serial
 x_values = []
 y_values = []
 class Ui_MainWindow(object):
+    signalCount=0
     modeOperation=''
     port = None
     serialPort = None
@@ -70,14 +71,14 @@ class Ui_MainWindow(object):
         while True:
             if serialPort.isOpen() & serialPort.inWaiting() >0:
                 data = self.receive_data(serialPort)
-                    #remove any @ or ; from data
-                    # data = data.replace('@', '')
-                    # data = data.replace(';', '')
-                    # #append first byte to y_values list and combine values from second to fifth byte to x_values list and convert to number from ascii
-                    # y_values.append(int(data[0])-0x30)
-                    # x_values.append(int(data[1:5]))
-                    # print (y_values)
-                
+                # split data into x and y values
+                data = data.replace('@','')
+                data = data.replace(';','')
+                for i in range(3):
+                    y_values.append(int(data[i*5],16))
+                    ##x_values.append(int(data[(i*5)+1:(i*5)+5],16))
+                    x_values.append(self.signalCount)
+                    self.signalCount+=1
                 #def animate(i):
                 #x = data['x_value']
                 #y1 = data['total_1']
