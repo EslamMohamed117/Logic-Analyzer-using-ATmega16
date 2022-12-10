@@ -62,20 +62,14 @@ class Ui_MainWindow(object):
         self.serialPort.write(data.encode())
 
     def receive_data(self, serialPort):
-        data = serialPort.read().decode('ascii').strip()
-        return data 
+        data = serialPort.readall()
+        return str(data, encoding='utf-8')
 
     def readingSerialPortThread(self, serialPort):
         print("readingSerialPortThread")
         while True:
-            if serialPort.isOpen():
-                for j in range(3):
-                    data = ''
-                    for i in range(7):
-                        data = data + self.receive_data(serialPort=serialPort)
-                        # if data legnth is greater than 0
-                    if len(data) > 0:
-                        print(data)
+            if serialPort.isOpen() & serialPort.inWaiting() >0:
+                data = self.receive_data(serialPort)
                     #remove any @ or ; from data
                     # data = data.replace('@', '')
                     # data = data.replace(';', '')
