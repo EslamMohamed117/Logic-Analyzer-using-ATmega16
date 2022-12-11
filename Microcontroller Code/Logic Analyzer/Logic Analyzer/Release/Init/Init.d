@@ -17,7 +17,8 @@ Init/Init.d Init/Init.o: ../Init/Init.c ../Init/Init.h \
  ../Init/../Lib/DIO/DIO.h ../Init/../Lib/USART/uart.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
  ../Init/../Lib/TIMER/timer1.h ../Init/../Lib/TIMER/../DIO/DIO.h \
- ../Init/../LED/LED.h ../Init/../LogicAnalyzer/logicAnalyzer.h
+ ../Init/../Lib/TIMER/../DIO/STD_MACROS.h ../Init/../LED/LED.h \
+ ../Init/../LogicAnalyzer/logicAnalyzer.h
 
 ../Init/Init.h:
 
@@ -60,6 +61,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 ../Init/../Lib/TIMER/timer1.h:
 
 ../Init/../Lib/TIMER/../DIO/DIO.h:
+
+../Init/../Lib/TIMER/../DIO/STD_MACROS.h:
 
 ../Init/../LED/LED.h:
 

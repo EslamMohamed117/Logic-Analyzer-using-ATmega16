@@ -19,7 +19,9 @@ LogicAnalyzer/logicAnalyzer.d LogicAnalyzer/logicAnalyzer.o: \
  ../LogicAnalyzer/logicAnalyzer.h ../LogicAnalyzer/../Lib/USART/uart.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
  ../LogicAnalyzer/../Lib/TIMER/timer1.h \
- ../LogicAnalyzer/../Lib/TIMER/../DIO/DIO.h ../LogicAnalyzer/../LED/LED.h
+ ../LogicAnalyzer/../Lib/TIMER/../DIO/DIO.h \
+ ../LogicAnalyzer/../Lib/TIMER/../DIO/STD_MACROS.h \
+ ../LogicAnalyzer/../LED/LED.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -62,5 +64,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 ../LogicAnalyzer/../Lib/TIMER/timer1.h:
 
 ../LogicAnalyzer/../Lib/TIMER/../DIO/DIO.h:
+
+../LogicAnalyzer/../Lib/TIMER/../DIO/STD_MACROS.h:
 
 ../LogicAnalyzer/../LED/LED.h:

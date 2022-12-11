@@ -11,7 +11,9 @@
 
 
 #include "../DIO/DIO.h"
-#include "avr/io.h"
+#include <avr/io.h>
+#include "../DIO/STD_MACROS.h"
+
 volatile static uint8_t timerOVFs  = 0;
 
 extern void TIMER_Init();
