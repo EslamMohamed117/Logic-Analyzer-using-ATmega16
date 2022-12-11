@@ -42,8 +42,8 @@ static uint32_t getTime(void)
 {
     // TODO: Place your code here, to compute the elapsed time.
 	// 0xFFFF -> 2^16 =65536 -> Clks= 65535
-	// Prescaler 8 -> Ft= 1 MHz / Tt = 1x10^-6 second
-	// Time = timerOVFs * 65535 * 1 (usec)
+	// Prescaler 8 -> Ft= 1 MHz / Tt = 8x10^-6 second
+	// Time = timerOVFs * 65535 * 8 (usec)
 	// TCNT1L & TCNT1H
 	uint32_t timerValue = 0;
 	timerValue = TCNT1;

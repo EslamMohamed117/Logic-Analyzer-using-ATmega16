@@ -8,8 +8,8 @@
 
 void TIMER_Init()
 {
-	// Setting Prescaler to 8
-	CLR_BIT(TCCR1B,CS10); //CS10
+	// Setting Prescaler to 64
+	SET_BIT(TCCR1B,CS10); //CS10
 	SET_BIT(TCCR1B,CS11); //CS11
 	CLR_BIT(TCCR1B,CS12); //CS12
 	
@@ -35,5 +35,7 @@ void TIMER_Reset()
 
 ISR(TIMER1_OVF_vect)
 {
+	cli();
 	timerOVFs+=1;	
+	sei();
 }
