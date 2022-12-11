@@ -39,12 +39,16 @@ class Ui_MainWindow(object):
             self.signalInfoGroup.setEnabled(True)
             signalReadingThread = Thread(target = self.readingSerialPortThread, daemon=True, args=(self.serialPort,))
             signalReadingThread.start()
+            self.connectBtn.setEnabled(False)
+            self.disconnectBtn.setEnabled(True)
         else:
             self.connectionLabel.setText("Not connected")
             self.connectionLabel.setStyleSheet("color: red")
             self.signalGroup.setEnabled(False)
             self.signalInfoGroup.setEnabled(False)
             self.port=None
+            self.connectBtn.setEnabled(True)
+            self.disconnectBtn.setEnabled(False)
     # disconnect from serial port
     def disconnect(self):
         self.serialPort.close()
@@ -53,51 +57,51 @@ class Ui_MainWindow(object):
         self.connectionLabel.setStyleSheet("color: red")
         self.signalGroup.setEnabled(False)
         self.signalInfoGroup.setEnabled(False)
+        self.connectBtn.setEnabled(True)
+        self.disconnectBtn.setEnabled(False)
 
     # refreshBtn ports
     def refresh_ports(self):
         self.comboBox.clear()
         self.load_ports()
+        if len(y_values) > 0:
+            self.animate()
 
     def send_to_memory(self, data):
         self.serialPort.write(data.encode())
 
     def receive_data(self, serialPort):
         data = serialPort.readall()
-        return str(data, encoding='utf-8')
+        return data
+
+    def animate(self):
+        plt.cla()
+        plt.bar(x_values,y_values,width=0.001)
+        plt.show()
+        try:
+            self.avgFrequencyValue.setText(str(round(float(len(x_values)/sum(x_values)),2))+ " MHz")
+        except ZeroDivisionError:
+            print("ZeroDivisionError")
+            self.avgFrequencyValue.setText("ERROR")
+        try:
+            self.pulseWidthValue.setText(str(round(x_values[1]-x_values[0],3))+" sec")
+        except IndexError:
+            print("IndexError")
+            self.pulseWidthValue.setText("ERROR")
 
     def readingSerialPortThread(self, serialPort):
         print("readingSerialPortThread")
         while True:
             if serialPort.isOpen() & serialPort.inWaiting() >0:
                 data = self.receive_data(serialPort)
-                # split data into x and y values
-                data = data.replace('@','')
-                data = data.replace(';','')
+                y_values.clear()
+                x_values.clear()
                 for i in range(3):
-                    y_values.append(int(data[i*5],16))
-                    ##x_values.append(int(data[(i*5)+1:(i*5)+5],16))
-                    x_values.append(self.signalCount)
-                    self.signalCount+=1
-                #def animate(i):
-                #x = data['x_value']
-                #y1 = data['total_1']
-                #y2 = data['total_2']
-
-                #plt.cla()
-
-                #plt.plot(x, y1, label='Channel 1')
-                #plt.plot(x, y2, label='Channel 2')
-
-                #plt.legend(loc='upper left')
-                #plt.tight_layout()
-
-
-                #ani = FuncAnimation(plt.gcf(), animate, interval=1000)
-
-                #plt.tight_layout()
-                #plt.show()
-
+                    y_values.append(int(data[i*7+1:i*7+2].hex(),16))
+                    x_values.append(int(data[(i*7)+2:(i*7)+6].hex(),16)* 0.000001)
+                #print table of x and y values
+                print("x_values: ", x_values)
+                print("y_values: ", y_values)             
               
 
 
@@ -113,6 +117,7 @@ class Ui_MainWindow(object):
         self.disconnectBtn = QtWidgets.QPushButton(self.connectionGroup)
         self.disconnectBtn.setGeometry(QtCore.QRect(240, 120, 93, 28))
         self.disconnectBtn.setObjectName("disconnectBtn")
+        self.disconnectBtn.setEnabled(False)
         self.connectionStatusLabel = QtWidgets.QLabel(self.connectionGroup)
         self.connectionStatusLabel.setGeometry(QtCore.QRect(40, 30, 111, 16))
         self.connectionStatusLabel.setObjectName("connectionStatusLabel")
@@ -165,6 +170,8 @@ class Ui_MainWindow(object):
         self.connectBtn.clicked.connect(self.connect)
         self.disconnectBtn.clicked.connect(self.disconnect)
         self.refreshBtn.clicked.connect(self.refresh_ports)
+
+
 
 
 
